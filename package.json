@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "prettier": "prettier --write \"src/**/*.ts\"",
+    "watch": "tsc -w",
     "eslint": "eslint --fix src --ext .ts --max-warnings=0",
+    "build": "npm run eslint && npm run prettier && rm -rf lib && tsc --build",
     "commit": "cz",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -21,6 +23,8 @@
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-n": "^16.6.1",
     "eslint-plugin-promise": "^6.1.1",
+    "husky": "^4.3.8",
+    "lint-staged": "^15.2.0",
     "prettier": "^3.1.1",
     "typescript": "^5.3.3"
   },
@@ -28,5 +32,17 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "*.ts": [
+      "npm run eslint",
+      "npm run prettier"
+    ]
   }
 }
